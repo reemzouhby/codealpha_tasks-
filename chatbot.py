@@ -1,5 +1,9 @@
 import nltk
 from nltk.tokenize import word_tokenize
+from googlesearch import search
+
+     
+ 
 greeting=['hi','hello','good morning','good evening']
 print('Hello, I am your friendly chatbot !')
 while True:
@@ -19,6 +23,13 @@ while True:
     elif 'name'  in word  :
           name=user.split('my name is ')[-1]
           print('Chatbot: Nice to meet you',name)
+    elif 'help' in user:
+        query = user.split('about ',1)[-1].strip()
+        results = search(query="Python Development Monterail",tld='com', num=1, lang="en")
+        results = list(results) 
+        print('Chatbot: Here is what I found:',results[0])
+      
+         
     elif 'thanks' in word   :
           print('Chatbot: You are welcome!')
     else:
