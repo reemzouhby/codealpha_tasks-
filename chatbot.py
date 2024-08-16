@@ -1,6 +1,7 @@
 import nltk
 from nltk.tokenize import word_tokenize
 from googlesearch import search
+import hangman
 
      
  
@@ -25,13 +26,17 @@ while True:
           print('Chatbot: Nice to meet you',name)
     elif 'help' in user:
         query = user.split('about ',1)[-1].strip()
-        results = search(query="Python Development Monterail",tld='com', num=1, lang="en")
+        results = search(query,tld='com', num=1, lang="en")
         results = list(results) 
         print('Chatbot: Here is what I found:',results[0])
       
          
-    elif 'thanks' in word   :
+    elif 'thanks' or 'thank you ' in word   :
           print('Chatbot: You are welcome!')
+    elif 'game'in word:
+         print('Chatbot:yeah! I have a funny game! do you want to play?')
+    elif 'yes' or 'yeah' in word :
+         print('Chatbot:',hangman.Hangman())
     else:
           print('Chatbot: Sorry, I didn\'t understand that.')
 
