@@ -4,31 +4,30 @@
 import os 
 import shutil
 #open listes of folders and then specific is word ppt or .txt files and organize it in specific files 
-
-
 def filemanager(source):
- txt='C:\\Users\\hcc\\Desktop\\codealphatasks\\txxt'
- word='C:\\Users\\hcc\\Desktop\\codealphatasks\\doc'
- pptt='C:\\Users\\hcc\\Desktop\\codealphatasks\\ppt2'
- os.makedirs(txt, exist_ok=True)
- os.makedirs(word, exist_ok=True)
- os.makedirs(pptt, exist_ok=True)
+    txt = 'C:/Users/hcc/Downloads/codealpha_tasks--main/txt'
+    word='C:/Users/hcc/Downloads/codealpha_tasks--main/doc'
+    pptt='C:/Users/hcc/Downloads/codealpha_tasks--main/ppt'
+    os.makedirs(txt, exist_ok=True)
+    os.makedirs(word, exist_ok=True)
+    os.makedirs(pptt, exist_ok=True)
 #path exist or no 
- if  not os.path.exists(source):
-    print('the source file not exist')
- else: 
+    if  not os.path.exists(source):
+      print('the source file not exist')
+      return  
     #file exiist so we an read it 
     for folder_name in os.listdir(source):
      folder_path = os.path.join(source, folder_name)
-    if os.path.isdir(folder_path):
+     if os.path.isdir(folder_path):
         
         for filename in os.listdir(folder_path):
             file_path = os.path.join(folder_path, filename)
+       
             
             if os.path.isfile(file_path):
                if filename.endswith('.txt'):
                         shutil.copy(file_path, txt)
-               elif filename.endswith('.ppt') or filename.endswith('.pptx'):
+               elif filename.endswith('.ppt') or filename.endswith('.pptm'):
                         shutil.copy(file_path, pptt)
                elif filename.endswith('.doc') or filename.endswith('.docx'):
                         shutil.copy(file_path, word)
@@ -36,6 +35,8 @@ def filemanager(source):
 
              print(" the file not supported:",file_path)
     print('files moved successfully')
+    
+ 
 #2nd def manger data entry for employment 
 import openpyxl
 from openpyxl import Workbook
@@ -50,14 +51,31 @@ def data_entry(Firstname , Lastname , email,phone,adress):
         wb = openpyxl.load_workbook(file)
         sheet = wb['Sheet1']
    else: 
-        # Create a new workbook if it doesn't exist
+      # Create a new workbook if it doesn't exist
         wb = Workbook()
         sheet = wb.active
         sheet.title = 'Sheet1'
         # Add headers to the first row if creating a new workbook
         sheet.append(['First Name', 'Last Name', 'Email', 'Phone', 'Address'])
+        wb.save(file)
     
+    # Reload the sheet in case it was modified during the session
+   wb = openpyxl.load_workbook(file)
+   sheet = wb['Sheet1']
+    
+    # Check for duplicates
+   for row in sheet.iter_rows(min_row=2, values_only=True):
+        if (row[0].strip().lower() == Firstname.strip().lower() and 
+            row[1].strip().lower() == Lastname.strip().lower() and 
+            row[2].strip().lower() == email.strip().lower() and 
+            row[3].strip().lower() == phone.strip().lower()):
+            print(f'Entry for {Firstname} {Lastname} already exists.')
+            return
+    
+    # Add the new entry if no duplicate is found
    sheet.append([Firstname, Lastname, email, phone, adress])
+   wb.save(file)
+   print(f'Entry for {Firstname} {Lastname} added successfully.')
     
    wb.save(file)
 def data_extract(Firstname,Lastname):
@@ -140,15 +158,16 @@ def salray_calculate(nb_projects, work_weekend, Firstname, Lastname):
 
 
 # Example usage:
-salray_calculate(30, True, 'reem', 'zouhbu')
+#salray_calculate(30, True, 'reem', 'zouhbu')
 
 #automation task 
-source='C:\\Users\\hcc\\Desktop\\codealphatasks\\main'
-filemanager(source)
-data_entry('reem','zouhbu','reemz@gmail.com','99999','lebanon')
-data_entry('reembb','zouhbuiiii','reehby3@gmail.com','99999','lebanon')
-data_entry('reem', 'zouhbu', 'reouhb@gmail.com', '99999', 'Lebanon')
-data_entry('majdeline', 'zouhbu', 'majdelinez@gmail.com', '88888', 'Lebanon')
-data_extract('reem','zouhbu')
-data_cleaning('majdeline', 'zouhbu', 'majdelinez@gmail.com', '88888', 'Lebanon')
-salray_calculate(30,True,'reem','zouhbu')
+
+source = r'C:\Users\hcc\Downloads\codealpha_tasks--main\source'
+#filemanager(source)
+data_entry('reem','zouhby','reemz@gmail.com','99999','halba ')
+data_entry('frah','zouhbi','fff@gmail.com','9789','halba')
+data_entry('srour', 'hammoud', 's@gmail.com', '99', 'Tripoli')
+data_entry('majdeline', 'allawa', 'majdelinez@gmail.com', '88888', 'Tripoli')
+#data_extract('reem','zouhby')
+#data_cleaning('majdeline', 'allawa', 'majdelinez@gmail.com', '88888', 'Tripoli')
+salray_calculate(30,True,'reem','zouhby')
